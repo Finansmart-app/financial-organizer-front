@@ -52,3 +52,23 @@ export function scrollToElement(
     element.scrollIntoView({ behavior, block: 'start' });
   }
 }
+
+/**
+ * Omite propiedades específicas de un objeto y devuelve un nuevo objeto sin esas propiedades.
+ *
+ * @param obj - El objeto original del cual se omitirán las propiedades.
+ * @param keys - Las claves de las propiedades a omitir.
+ * @returns Un nuevo objeto sin las propiedades especificadas.
+ *
+ * @example
+ * ```typescript
+ * const original = { a: 1, b: 2, c: 3 };
+ * const modified = omit(original, 'b', 'c');
+ * // modified será { a: 1 }
+ * ```
+ */
+export function omit<T extends object, K extends keyof T>(obj: T, ...keys: K[]): any {
+  const result = { ...obj };
+  keys.forEach(key => delete result[key]);
+  return result;
+}

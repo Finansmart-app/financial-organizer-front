@@ -104,6 +104,7 @@ export class NewBudgetComponent implements OnInit {
   constructor() {
     effect(() => {
       this.categories = this.userService.userCategories();
+      this.getFormArray('categories').clear();
       this.categories.forEach(category => {
         this.getFormArray('categories').push(
           new FormGroup({

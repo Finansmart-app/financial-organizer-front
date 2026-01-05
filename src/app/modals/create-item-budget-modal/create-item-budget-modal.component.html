@@ -9,13 +9,13 @@
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <fs-input
       formControlName="amount"
-      label="Monto del Ingreso"
+      [label]="'Monto del ' + (data.isIncome ? 'Ingreso' : 'Gasto')"
       placeholder="Ej: 1000.00"
       [currencyMask]="true"
     ></fs-input>
     <fs-input
       formControlName="concept"
-      label="Concepto del Ingreso"
+      [label]="'Concepto del ' + (data.isIncome ? 'Ingreso' : 'Gasto')"
       placeholder="Ej: Salario, Freelance, etc."
     ></fs-input>
     @if (!data.isIncome) {
