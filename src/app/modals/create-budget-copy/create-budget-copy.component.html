@@ -1,0 +1,28 @@
+<div class="create-budget">
+  <form [formGroup]="form">
+    <fs-input formControlName="name" label="Nombre"></fs-input>
+    <fs-select-input
+      formControlName="currency"
+      label="Moneda"
+      [options]="currencyOptions"
+    ></fs-select-input>
+    <fs-date-picker formControlName="startDate" label="Fecha de inicio"></fs-date-picker>
+    <fs-date-picker
+      formControlName="endDate"
+      label="Fecha de fin"
+      [minDate]="minDate"
+    ></fs-date-picker>
+  </form>
+  <div class="create-budget__buttons">
+    <fs-button
+      variant="secondary"
+      label="Cancelar"
+      (click)="closeModal(true)"
+    ></fs-button>
+    <fs-button
+      label="Guardar"
+      (click)="closeModal(false)"
+      [disabled]="buttonnDisabled"
+    ></fs-button>
+  </div>
+</div>

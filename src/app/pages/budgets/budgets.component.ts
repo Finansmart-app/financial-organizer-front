@@ -7,6 +7,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { UserService } from '../../../services/user.service';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateBudgetCopyComponent } from '../../modals/create-budget-copy/create-budget-copy.component';
+import { BudgetDetail } from '../../models/budget.model';
+import { omit } from '../../utils/functions.util';
+import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'app-budgets',
@@ -25,6 +30,8 @@ export class BudgetsComponent implements OnInit {
   private budgetService = inject(BudgetService);
   private userService = inject(UserService);
   private router = inject(Router);
+  private matDialog = inject(MatDialog);
+  private alertService = inject(AlertService);
   public budgets$ = this.budgetService.budgets;
 
   ngOnInit(): void {
@@ -76,17 +83,52 @@ export class BudgetsComponent implements OnInit {
   }
 
   public deleteBudget(id: string, name: string): void {
+    // TODO: Implementar modal construido
     if (confirm(`¿Estás seguro de eliminar el presupuesto "${name}"?`)) {
-      // TODO: Implementar llamada al servicio para eliminar
-      console.log('Eliminar presupuesto:', id);
       this.budgetService.deleteBudget(id).subscribe(() => {
         this.budgetService.getBudgets().subscribe();
       });
     }
   }
 
-  public duplicateBudget(budget: any): void {
-    // TODO: Implementar lógica para duplicar presupuesto
-    console.log('Duplicar presupuesto:', budget);
+  public duplicateBudget(budgetId: string): void {
+    this.matDialog
+      .open(CreateBudgetCopyComponent, {
+        width: '500px',
+        maxWidth: '80vw',
+        disableClose: false,
+        panelClass: 'custom-dialog-container',
+      })
+      .afterClosed()
+      .subscribe(result => {
+        if (result) {
+          this.budgetService.getBudgetById(budgetId).subscribe(budgetDetail => {
+            const budgetRequest: BudgetDetail = budgetDetail;
+
+            budgetRequest.name = result.name;
+            budgetRequest.currency = result.currency.value;
+            budgetRequest.startDate = result.startDate;
+            budgetRequest.endDate = result.endDate;
+            budgetRequest.expenses = budgetDetail.expenses.map(exp => {
+              exp.status = 'PENDING';
+              return omit(exp, 'id');
+            });
+            budgetRequest.incomes = budgetDetail.incomes.map(income =>
+              omit(income, 'id')
+            );
+
+            console.log(budgetRequest);
+            this.budgetService.createBudget(budgetRequest).subscribe({
+              next: () => {
+                this.alertService.showSuccess('Presupuesto duplicado exitosamente');
+                this.budgetService.getBudgets().subscribe();
+              },
+              error: () => {
+                this.alertService.showError('Error al duplicar el presupuesto');
+              },
+            });
+          });
+        }
+      });
   }
 }

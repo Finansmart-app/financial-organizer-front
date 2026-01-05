@@ -48,6 +48,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit {
   @Input() public width: string = '100%';
   @Input() public mode: 'single' | 'range' = 'single';
   @Input() public valueValidator: ValidatorValue = {};
+  @Input() public minDate: Date | null = null;
   public disabled: boolean = false;
   public value: DateValue = null;
   public form: FormGroup = new FormGroup({
