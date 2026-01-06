@@ -61,6 +61,14 @@ export const routes: Routes = [
           ),
         canActivate: [tokenGuard],
       },
+      {
+        path: 'categories',
+        loadComponent: () =>
+          import('./pages/categories/categories.component').then(
+            m => m.CategoriesComponent
+          ),
+        canActivate: [tokenGuard],
+      },
     ],
   },
   // Mantener home como redirect temporal

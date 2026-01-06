@@ -1,0 +1,43 @@
+<div class="categories">
+  <div class="categories__header">
+    <div class="categories__header-info">
+      <h1>Categorias</h1>
+      <p>Administra y visualiza todas tus categorias</p>
+    </div>
+    <fs-button
+      (click)="addCategory()"
+      icon="add"
+      type="button"
+      id="btn-new-category"
+      label="Nueva categoría"
+    ></fs-button>
+  </div>
+  <div class="categories__cards">
+    @for (item of categories; track $index) {
+      <div
+        class="card"
+        [style.backgroundColor]="item.color + '33'"
+        [style.borderColor]="item.color"
+      >
+        <button mat-icon-button [matMenuTriggerFor]="menu" class="budget-card__menu-btn">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="deleteCategory(item.id)">
+            <mat-icon>delete</mat-icon>
+            <span>Eliminar</span>
+          </button>
+        </mat-menu>
+        <div
+          class="icon"
+          [style.backgroundColor]="item.color + '33'"
+          [style.borderColor]="item.color"
+        >
+          <span class="material-icons">{{ item.icon }}</span>
+        </div>
+        <h3>{{ item.name | titlecase }}</h3>
+        <div [style.backgroundColor]="item.color" class="bar"></div>
+      </div>
+    } @empty {}
+  </div>
+</div>

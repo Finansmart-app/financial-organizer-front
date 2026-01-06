@@ -33,8 +33,8 @@ export class DashboardLayoutComponent implements OnInit, OnDestroy {
       route: '/budgets',
       active: false,
     },
+    { label: 'Categorías', icon: 'category', route: '/categories', active: false },
     // { label: 'Transacciones', icon: 'swap_horiz', route: '/transactions', active: false },
-    // { label: 'Categorías', icon: 'category', route: '/categories', active: false },
     // { label: 'Reportes', icon: 'bar_chart', route: '/reports', active: false },
     // { label: 'Configuración', icon: 'settings', route: '/settings', active: false },
   ];
